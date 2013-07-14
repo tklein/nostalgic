@@ -216,9 +216,6 @@ function SymlinkRepo()
     if [[ $PREFIXED -eq 1 ]]; then
 		shopt -s dotglob
 		GLOBIGNORE=.git
-	    PREFIX=""
-	else
-	    PREFIX="."
 	fi
 
 
@@ -285,10 +282,12 @@ function Track()
     [[ -z "$1" || -z "$2" ]] && err "track requires two arguments"
 
     local repo="$REPOS/$2"
+
     # strip the destination prefix from file path
     local relpath=$(rel_src_path ${DEST} $1)
     local reporelpath=$(to_repo_path $relpath)
     local newfile="$repo/$reporelpath"
+
 
     RepoExists "$repo" 'track'
 
@@ -335,6 +334,7 @@ cat <<EOM
    -d <dir>   symlink destination dir (default: dot = \$HOME; bin = \$HOME/bin)
    -c <file>  use config file (default = \$HOME/.nostalgicrc)
    -m <mode>  file mode: dot or bin
+
 
  Commands:
    clone <uri>            clone URI as a repo to be used
@@ -399,6 +399,10 @@ fi
 
 if [[ ! -d "$DEST" ]]; then
     err "symlink destination dir '$DEST' does not exist"
+fi
+
+if [[ $PREFIXED -eq 1 ]]; then
+	DOT_PREFIX=
 fi
 
 case $1 in
