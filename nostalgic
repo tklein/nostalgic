@@ -35,10 +35,10 @@ NBASEDIR=$HOME/.nostalgic
 OLD_DOT_REPOS=$HOME/dots
 DOT_REPOS=$NBASEDIR/dots
 BIN_REPOS=$NBASEDIR/bins
-REPOS=$DOT_REPOS
+REPOS=
 DOT_DEST=$HOME
 BIN_DEST=$HOME/bin
-DEST=$DOT_DEST
+DEST=
 DOT_PREFIX=.
 BIN_PREFIX=
 CFGFILE=$HOME/.nostalgicrc
@@ -368,16 +368,16 @@ shift $((OPTIND-1))
 case $MODE in
   d|dot)
     MODE=dot
-    REPOS=$DOT_REPOS 
-    DEST=$DOT_DEST
+    [[ -n $REPOS ]] || REPOS=$DOT_REPOS 
+    [[ -n $DEST ]] || DEST=$DOT_DEST
     # backwards compatibility - set dot dest to the "old" dot dest
     # if it already exists
     [[ -d $OLD_DOT_REPOS ]] && REPOS=$OLD_DOT_REPOS
     ;; 
   b|bin)
     MODE=bin
-    REPOS=$BIN_REPOS
-    DEST=$BIN_DEST
+    [[ -n $REPOS ]] || REPOS=$BIN_REPOS
+    [[ -n $DEST ]] || DEST=$BIN_DEST
     ;;
   *) err "Invalid mode. Specify: 'dot' or 'bin'";;
 esac
